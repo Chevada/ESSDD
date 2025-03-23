@@ -2,5 +2,4 @@ data
 finetuned_models
 sh/Salesforce
 sh/saved_models
-*.txt
 .idea

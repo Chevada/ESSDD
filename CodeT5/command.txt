@@ -1,0 +1,32 @@
+gsutil -m cp -r "gs://sfr-codet5-data-research/data/concode"
+
+gsutil -m cp -r "gs://sfr-codet5-data-research/finetuned_models/concode_codet5_base.bin" E:\learing\论文复现\CodeT5
+
+python run_exp.py --model_tag codet5_base --task concode --sub_task none
+
+python run_exp.py --model_tag codet5_base --task gen_class --sub_task none
+
+python run_exp.py --model_tag codet5_base --task siamese --sub_task none
+
+python run_exp.py --model_tag codet5_base --task sia_gen --sub_task none
+
+请对应运行命令与实际执行文件的对应关系，在执行上述命令之前，请修改相应文件为对应的文件名：
+”“”
+if [[ ${TASK} == 'multi_task' ]]; then
+  RUN_FN=${WORKDIR}/run_multi_gen.py
+  MULTI_TASK_AUG='--max_steps '${16}' --save_steps '${17}' --log_steps '${18}
+elif [[ ${TASK} == 'clone' ]]; then
+  RUN_FN=${WORKDIR}/run_clone.py
+elif [[ ${TASK} == 'defect' ]] && [[ ${MODEL_TYPE} == 'roberta' ||  ${MODEL_TYPE} == 'bart' ]]; then
+  RUN_FN=${WORKDIR}/run_defect.py
+elif [[ ${TASK} == 'siamese' ]]; then
+  RUN_FN=${WORKDIR}/run_siamese.py
+elif [[ ${TASK} == 'sia_gen' ]]; then
+  RUN_FN=${WORKDIR}/run_gen_use_sia_model.py
+else
+  RUN_FN=${WORKDIR}/run_gen.py
+fi
+“”“
+比如我想训练孪生网络时，我需要把run_pyclass_siamese.py文件重新命名为run_siamese.py，同时注意命名冲突，
+然后在命令行执行“python run_exp.py --model_tag codet5_base --task siamese --sub_task none”命令即可。
+
